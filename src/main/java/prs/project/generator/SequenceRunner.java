@@ -40,8 +40,8 @@ import com.fasterxml.jackson.databind.json.JsonMapper;
 
 @Slf4j
 @Service
-public class SequenceRunner {
-
+public class SequenceRunner
+{
     @Autowired
     Ledger ledger;
 
@@ -55,7 +55,8 @@ public class SequenceRunner {
     EnumMap<Product, Long> rezerwacje = new EnumMap(Product.class);
     Long promoLicznik = 0L;
 
-    public SequenceRunner(Settings settings, List<Akcja> akcje) {
+    public SequenceRunner(Settings settings, List<Akcja> akcje)
+    {
         this.settings = settings;
         this.akcje = akcje;
         Arrays.stream(Product.values()).forEach(p -> sprzedaz.put(p,0L));
@@ -66,12 +67,14 @@ public class SequenceRunner {
         mojeTypy.addAll(Zaopatrzenie.valueOf(settings.getZaopatrzenie()).getAkceptowane());
         mojeTypy.addAll(Wydarzenia.valueOf(settings.getWydarzenia()).getAkceptowane());
         mojeTypy.addAll(Arrays.asList(SterowanieAkcja.values()));
+
         Thread thread = new Thread(() ->
         {
             while (active) {
                 threadProcess();
             }
         });
+
         thread.start();
     }
 
@@ -83,13 +86,19 @@ public class SequenceRunner {
                 });
     }
 
-    public void threadProcess() {
-        if (!kolejka.isEmpty()) {
+    public void threadProcess()
+    {
+        if (!kolejka.isEmpty())
+        {
             Akcja akcja = kolejka.pollFirst();
             ReplyToAction odpowiedz = procesujAkcje(akcja);
-            try {
+
+            try
+            {
                 wyslijOdpowiedzLokalnie(odpowiedz);
-            } catch (Exception e) {
+            }
+            catch (Exception e)
+            {
                 e.printStackTrace();
             }
         }

@@ -12,15 +12,18 @@ import static com.fasterxml.jackson.databind.SerializationFeature.WRITE_ENUMS_US
 
 @SpringBootApplication
 
-public class SpringRedisApplication {
-
-    public static void main(String[] args) {
+public class SpringRedisApplication
+{
+    public static void main(String[] args)
+    {
         SpringApplication.run(SpringRedisApplication.class, args);
     }
 
-    public class CustomObjectMapper extends ObjectMapper {
+    public class CustomObjectMapper extends ObjectMapper
+    {
         @PostConstruct
-        public void customConfiguration() {
+        public void customConfiguration()
+        {
             // Uses Enum.toString() for serialization of an Enum
             this.enable(WRITE_ENUMS_USING_TO_STRING);
             // Uses Enum.toString() for deserialization of an Enum

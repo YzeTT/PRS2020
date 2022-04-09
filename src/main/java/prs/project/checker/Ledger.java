@@ -32,16 +32,19 @@ import static org.assertj.core.api.Assertions.assertThat;
 @Setter
 @Slf4j
 @NoArgsConstructor
-public class Ledger {
 
+public class Ledger
+{
     ConcurrentHashMap<Long, ArrayList<Akcja>> actions = new ConcurrentHashMap<>();
     ConcurrentHashMap<Long, ArrayList<ReplyToAction>> logActions = new ConcurrentHashMap<>();
     ArrayList<ReplyToAction> pattern = new ArrayList<>();
     ConcurrentHashMap<Long, Warehouse> warehouses = new ConcurrentHashMap<>();
     ConcurrentHashMap<Long, Set<Enum>> types = new ConcurrentHashMap<>();
 
-    public void addReply(ReplyToAction odpowiedz) throws InterruptedException {
-        if (!logActions.containsKey(odpowiedz.getStudentId())) {
+    public void addReply(ReplyToAction odpowiedz) throws InterruptedException
+    {
+        if (!logActions.containsKey(odpowiedz.getStudentId()))
+        {
 
             logActions.put(odpowiedz.getStudentId(), new ArrayList<>());
 
@@ -55,7 +58,8 @@ public class Ledger {
 
     }
 
-    public void addReplySequencer(ReplyToAction odpowiedz) throws InterruptedException {
+    public void addReplySequencer(ReplyToAction odpowiedz) throws InterruptedException
+    {
         odpowiedz.setTimestamp(LocalDateTime.now());
         pattern.add(odpowiedz);
 
@@ -63,7 +67,8 @@ public class Ledger {
 
     }
 
-    public void evaluate(long indeks) throws AssertionError {
+    public void evaluate(long indeks) throws AssertionError
+    {
         long czas = Duration.between(pattern.get(0).getTimestamp(), pattern.get(pattern.size() - 1).getTimestamp()).toSeconds();
         long liczbaAkceptacji = pattern.stream().filter(m -> Boolean.TRUE.equals(m.getZrealizowaneZamowienie())).count();
         long liczbaNieakceptacji = pattern.stream().filter(m ->
@@ -123,7 +128,8 @@ public class Ledger {
         }
         log.warn("Jeżeli nie ma bledow program zadzialal poprawnie");
     }
-    public void clear() {
+    public void clear()
+    {
         pattern.clear();
         logActions.clear();
         actions.clear();
