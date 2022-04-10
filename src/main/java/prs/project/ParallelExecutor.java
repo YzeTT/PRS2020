@@ -67,6 +67,7 @@ public class ParallelExecutor
         mojeTypy.addAll(Zaopatrzenie.valueOf(settings.getZaopatrzenie()).getAkceptowane());
         mojeTypy.addAll(Wydarzenia.valueOf(settings.getWydarzenia()).getAkceptowane());
         mojeTypy.addAll(Arrays.asList(SterowanieAkcja.values()));
+
         Thread thread = new Thread(() ->
         {
             while (active) {
@@ -82,6 +83,7 @@ public class ParallelExecutor
                 threadProcess();
             }
         });
+
         thread2.start();
     }
 
@@ -104,6 +106,12 @@ public class ParallelExecutor
             {
                 akcja = kolejka.pollFirst();
             }
+
+            if(akcja.getTyp().equals("ZAOPATRZENIE"))
+            {
+
+            }
+
         }
 
         if (akcja != null)
@@ -271,7 +279,9 @@ public class ParallelExecutor
             akcja.getGrupaProduktów().entrySet().stream()
                     .forEach(produkt -> {
                         Long naMagazynie = magazyn.getStanMagazynowy().get(produkt.getKey());
-                        if(magazyn.getStanMagazynowy().get(akcja.getProduct()) >= 0) {
+
+                        if(magazyn.getStanMagazynowy().get(akcja.getProduct()) >= 0)
+                        {
                             magazyn.getStanMagazynowy().put(produkt.getKey(), naMagazynie + produkt.getValue());
                         }
                     });

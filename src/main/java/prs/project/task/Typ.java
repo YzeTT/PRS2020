@@ -1,9 +1,9 @@
 package prs.project.task;
-public enum Typ {
 
+public enum Typ
+{
     WYCENA,
     ZAMOWIENIE,
     ZAOPATRZENIE,
     WYDARZENIE;
-
 }

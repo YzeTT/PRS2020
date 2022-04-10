@@ -33,7 +33,4 @@ public class Akcja implements Serializable {
     EnumMap<Product, Long> grupaProduktów;
     Long cena;
 
-
-
-
 }

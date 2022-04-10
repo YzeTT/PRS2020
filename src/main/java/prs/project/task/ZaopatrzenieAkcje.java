@@ -13,12 +13,14 @@ public enum ZaopatrzenieAkcje {
     GRUPOWE_ZAOPATRZENIE;
 
     @JsonCreator
-    public static ZaopatrzenieAkcje forValue(String value) {
+    public static ZaopatrzenieAkcje forValue(String value)
+    {
         return ZaopatrzenieAkcje.valueOf(value);
     }
 
     @JsonValue
-    public String toValue() {
+    public String toValue()
+    {
         return this.toString();
     }
 
