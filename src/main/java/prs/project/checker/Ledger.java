@@ -45,9 +45,7 @@ public class Ledger
     {
         if (!logActions.containsKey(odpowiedz.getStudentId()))
         {
-
             logActions.put(odpowiedz.getStudentId(), new ArrayList<>());
-
         }
 
         odpowiedz.setTimestamp(LocalDateTime.now());
@@ -55,7 +53,6 @@ public class Ledger
         list.add(odpowiedz);
 
         Thread.sleep(100);
-
     }
 
     public void addReplySequencer(ReplyToAction odpowiedz) throws InterruptedException
@@ -64,7 +61,6 @@ public class Ledger
         pattern.add(odpowiedz);
 
         Thread.sleep(100);
-
     }
 
     public void evaluate(long indeks) throws AssertionError
@@ -117,15 +113,22 @@ public class Ledger
         assertThat(liczbaNieakceptacjiStudent).as("Twój program odrzucil/nie odrzucil niepoprawnych zakupow").isEqualTo(liczbaNieakceptacji);
         assertThat(stanMagazynówStudent).as("Stan magazynów na koniec sie nie zgadza").containsAllEntriesOf(stanMagazynów);
         assertThat(stanCenStudent).as("Stan cen na koniec sie nie zgadza").containsAllEntriesOf(stanCen);
-        for (int i = 0; i < cenyOdpowiedziStudent.size(); i++){
+
+        for (int i = 0; i < cenyOdpowiedziStudent.size(); i++)
+        {
             assertThat(cenyOdpowiedziStudent.get(i)).usingRecursiveComparison().ignoringFields("timestamp", "studentId").isEqualTo(cenyOdpowiedzi.get(i));
         }
-        for (int i = 0; i < inwOdpowiedziStudent.size(); i++){
+
+        for (int i = 0; i < inwOdpowiedziStudent.size(); i++)
+        {
             assertThat(inwOdpowiedziStudent.get(i)).usingRecursiveComparison().ignoringFields("timestamp", "studentId").isEqualTo(inwOdpowiedzi.get(i));
         }
-        for (int i = 0; i < raportyOdpowiedziStudent.size(); i++){
+
+        for (int i = 0; i < raportyOdpowiedziStudent.size(); i++)
+        {
             assertThat(raportyOdpowiedziStudent.get(i)).usingRecursiveComparison().ignoringFields("timestamp", "studentId").isEqualTo(raportyOdpowiedzi.get(i));
         }
+
         log.warn("Jeżeli nie ma bledow program zadzialal poprawnie");
     }
     public void clear()

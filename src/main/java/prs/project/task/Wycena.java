@@ -16,7 +16,8 @@ public enum Wycena {
 
     Set<WycenaAkcje> akceptowane;
 
-    Wycena(List<WycenaAkcje> types) {
+    Wycena(List<WycenaAkcje> types)
+    {
         this.akceptowane = Sets.newHashSet(types);
     }
 }

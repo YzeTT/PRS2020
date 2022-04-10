@@ -8,6 +8,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.ConcurrentLinkedDeque;
+import java.util.concurrent.locks.ReentrantLock;
 import java.util.stream.Stream;
 
 import lombok.extern.slf4j.Slf4j;
@@ -70,7 +71,8 @@ public class ParallelExecutor
 
         Thread thread = new Thread(() ->
         {
-            while (active) {
+            while (active)
+            {
                 threadProcess();
             }
         });
@@ -79,12 +81,14 @@ public class ParallelExecutor
 
         Thread thread2 = new Thread(() ->
         {
-            while (active) {
+            while (active)
+            {
                 threadProcess();
             }
         });
 
         thread2.start();
+
     }
 
     public void process(Akcja jednaAkcja)
@@ -98,35 +102,35 @@ public class ParallelExecutor
 
     public void threadProcess()
     {
+        ReentrantLock lock = new ReentrantLock();
         Akcja akcja = null;
 
-        synchronized (this)
-        {
+        lock.lock();
+        try {
+
             if (!kolejka.isEmpty())
             {
                 akcja = kolejka.pollFirst();
             }
-
-            if(akcja.getTyp().equals("ZAOPATRZENIE"))
-            {
-
-            }
-
         }
-
-        if (akcja != null)
+        finally
         {
-            ReplyToAction odpowiedz = procesujAkcje(akcja);
-
-            try
-            {
-                wyslijOdpowiedzLokalnie(odpowiedz);
-            }
-            catch (Exception e)
-            {
-                e.printStackTrace();
-            }
+            lock.unlock();
         }
+
+            if (akcja != null)
+            {
+                ReplyToAction odpowiedz = procesujAkcje(akcja);
+
+                try
+                {
+                    wyslijOdpowiedzLokalnie(odpowiedz);
+                }
+                catch (Exception e)
+                {
+                    e.printStackTrace();
+                }
+            }
     }
 
     private ReplyToAction procesujAkcje(Akcja akcja)
@@ -266,10 +270,7 @@ public class ParallelExecutor
             Long naMagazynie = magazyn.getStanMagazynowy().get(akcja.getProduct());
             odpowiedz.setZebraneZaopatrzenie(true);
 
-            if(magazyn.getStanMagazynowy().get(akcja.getProduct()) >= 0)
-            {
-                magazyn.getStanMagazynowy().put(akcja.getProduct(), naMagazynie + akcja.getLiczba());
-            }
+            magazyn.getStanMagazynowy().put(akcja.getProduct(), naMagazynie + akcja.getLiczba());
         }
 
         if (ZaopatrzenieAkcje.GRUPOWE_ZAOPATRZENIE.equals(akcja.getTyp()))
@@ -279,11 +280,7 @@ public class ParallelExecutor
             akcja.getGrupaProduktów().entrySet().stream()
                     .forEach(produkt -> {
                         Long naMagazynie = magazyn.getStanMagazynowy().get(produkt.getKey());
-
-                        if(magazyn.getStanMagazynowy().get(akcja.getProduct()) >= 0)
-                        {
-                            magazyn.getStanMagazynowy().put(produkt.getKey(), naMagazynie + produkt.getValue());
-                        }
+                        magazyn.getStanMagazynowy().put(produkt.getKey(), naMagazynie + produkt.getValue());
                     });
         }
 
