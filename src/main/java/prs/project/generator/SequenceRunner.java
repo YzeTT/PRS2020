@@ -79,7 +79,8 @@ public class SequenceRunner
         thread.start();
     }
 
-    public void process(Akcja jednaAkcja) {
+    public void process(Akcja jednaAkcja)
+    {
         Stream.of(jednaAkcja)
                 .filter(akcja -> mojeTypy.contains(akcja.getTyp()))
                 .forEach(akcja -> {
@@ -160,9 +161,9 @@ public class SequenceRunner
 
             if (naMagazynie >= akcja.getLiczba())
             {
-                odpowiedz.setZrealizowaneZamowienie(true);
                 magazyn.getStanMagazynowy().put(akcja.getProduct(), naMagazynie - akcja.getLiczba());
                 sprzedaz.put(akcja.getProduct(), sprzedaz.get(akcja.getProduct()) + akcja.getLiczba());
+                odpowiedz.setZrealizowaneZamowienie(true);
             }
             else
             {
@@ -189,26 +190,37 @@ public class SequenceRunner
                         });
             }
         }
-        if (ZamowieniaAkcje.REZERWACJA.equals(akcja.getTyp())) {
+        if (ZamowieniaAkcje.REZERWACJA.equals(akcja.getTyp()))
+        {
             odpowiedz.setProdukt(akcja.getProduct());
             odpowiedz.setLiczba(akcja.getLiczba());
             Long naMagazynie = magazyn.getStanMagazynowy().get(akcja.getProduct());
-            if (naMagazynie >= akcja.getLiczba()) {
-                odpowiedz.setZrealizowaneZamowienie(true);
+
+            if (naMagazynie >= akcja.getLiczba())
+            {
                 magazyn.getStanMagazynowy().put(akcja.getProduct(), naMagazynie - akcja.getLiczba());
                 rezerwacje.put(akcja.getProduct(), rezerwacje.get(akcja.getProduct()) + akcja.getLiczba());
-            } else {
+                odpowiedz.setZrealizowaneZamowienie(true);
+            }
+            else
+            {
                 odpowiedz.setZrealizowaneZamowienie(false);
             }
         }
-        if (ZamowieniaAkcje.ODBIÓR_REZERWACJI.equals(akcja.getTyp())) {
+
+        if (ZamowieniaAkcje.ODBIÓR_REZERWACJI.equals(akcja.getTyp()))
+        {
             odpowiedz.setProdukt(akcja.getProduct());
             odpowiedz.setLiczba(akcja.getLiczba());
             Long naMagazynie = rezerwacje.get(akcja.getProduct());
-            if (naMagazynie >= akcja.getLiczba()) {
-                odpowiedz.setZrealizowaneZamowienie(true);
+
+            if (naMagazynie >= akcja.getLiczba())
+            {
                 rezerwacje.put(akcja.getProduct(), rezerwacje.get(akcja.getProduct()) - akcja.getLiczba());
-            } else {
+                odpowiedz.setZrealizowaneZamowienie(true);
+            }
+            else
+            {
                 odpowiedz.setZrealizowaneZamowienie(false);
             }
         }

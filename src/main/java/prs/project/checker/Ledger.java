@@ -102,8 +102,10 @@ public class Ledger
 
         List<ReplyToAction> cenyOdpowiedziStudent = logActions.get(indeks).stream().filter(m -> m.getTyp().equals(WycenaAkcje.PODAJ_CENE))
                 .sorted(Comparator.comparing(ReplyToAction::getId)).collect(Collectors.toList());
+
         List<ReplyToAction> inwOdpowiedziStudent = logActions.get(indeks).stream().filter(m -> m.getTyp().equals(WydarzeniaAkcje.INWENTARYZACJA))
                 .sorted(Comparator.comparing(ReplyToAction::getId)).collect(Collectors.toList());
+
         List<ReplyToAction> raportyOdpowiedziStudent = logActions.get(indeks).stream()
                 .filter(m -> m.getTyp().equals(WydarzeniaAkcje.RAPORT_SPRZEDAŻY))
                 .sorted(Comparator.comparing(ReplyToAction::getId)).collect(Collectors.toList());

@@ -88,7 +88,6 @@ public class ParallelExecutor
         });
 
         thread2.start();
-
     }
 
     public void process(Akcja jednaAkcja)
@@ -102,21 +101,12 @@ public class ParallelExecutor
 
     public void threadProcess()
     {
-        ReentrantLock lock = new ReentrantLock();
         Akcja akcja = null;
-
-        lock.lock();
-        try {
 
             if (!kolejka.isEmpty())
             {
                 akcja = kolejka.pollFirst();
             }
-        }
-        finally
-        {
-            lock.unlock();
-        }
 
             if (akcja != null)
             {
@@ -236,9 +226,9 @@ public class ParallelExecutor
 
             if (naMagazynie >= akcja.getLiczba())
             {
-                odpowiedz.setZrealizowaneZamowienie(true);
                 magazyn.getStanMagazynowy().put(akcja.getProduct(), naMagazynie - akcja.getLiczba());
                 rezerwacje.put(akcja.getProduct(), rezerwacje.get(akcja.getProduct()) + akcja.getLiczba());
+                odpowiedz.setZrealizowaneZamowienie(true);
             }
             else
             {
@@ -250,12 +240,12 @@ public class ParallelExecutor
         {
             odpowiedz.setProdukt(akcja.getProduct());
             odpowiedz.setLiczba(akcja.getLiczba());
-            Long naMagazynie = rezerwacje.get(akcja.getProduct());
+            Long wRezerwacji = rezerwacje.get(akcja.getProduct());
 
-            if (naMagazynie >= akcja.getLiczba())
+            if (wRezerwacji >= akcja.getLiczba())
             {
-                odpowiedz.setZrealizowaneZamowienie(true);
                 rezerwacje.put(akcja.getProduct(), rezerwacje.get(akcja.getProduct()) - akcja.getLiczba());
+                odpowiedz.setZrealizowaneZamowienie(true);
             }
             else
             {
